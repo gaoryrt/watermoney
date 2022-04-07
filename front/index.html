@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自助缴水费与垃圾费</title>
+</head>
+<body style="opacity: 0">
+  <div class="page p1">
+    <h1>1.选择户号</h1>
+    <h2 class="mt">需要缴费的户号：</h2>
+    <select class="select">
+      <option value="101">101</option>
+      <option value="102">102</option>
+      <option value="203">203</option>
+      <option value="204">204</option>
+      <option value="305">305</option>
+      <option value="306">306</option>
+      <option value="407">407</option>
+      <option value="408">408</option>
+      <option value="509">509</option>
+      <option value="510">510</option>
+      <option value="611">611</option>
+      <option value="612">612</option>
+    </select>
+    <button class="btn mt">确认</button>
+  </div>
+
+  <div class="page p2 _hide">
+    <h1>2.输入新读数</h1>
+    <h2 class="mt">户号 <span id="door"></span> 上次缴费读数为 <span id="val"></span> 吨</h2>
+    <h2>更新于 <span id="ts"></span></h2>
+    <h1 class="mt">新的读数：</h1>
+    <input class="input mt" min="0" type="number" placeholder="在此输入新的读数">
+    <button class="btn mt">确认</button>
+  </div>
+
+  <div class="page p3 _hide">
+    <h1>3.扫码支付</h1>
+    <h3>水费：<span id="alpha"></span>（吨）x 3.1（元/吨）= <span id="wprice"></span>（元）</h3>
+    <h3>垃圾费：<span id="duration"></span>（月） x 8（元/月）= <span id="gmoney"></span>（元）</h3>
+    <h2>合计：<span id="total"></span> 元 </h2>
+    <h2>长按二维码支付</h2>
+    <img src="https://cdn.jsdelivr.net/gh/gaoryrt/f/1636961079953-IMG_2793.JPG">
+    <h2>读数将于收款后一日内更新</h2>
+  </div>
+
+  <div class="page sp _hide">
+    <svg width="42px" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 22 22">
+      <style>
+        svg {
+          animation: A 1.2s steps(12) infinite;
+        }
+        @keyframes A {
+          to {
+            transform: rotate(1turn);
+          }
+        }
+      </style>
+      <g stroke-width="2" stroke-linecap="round">
+        <path stroke="#fff" d="M11 1v3" />
+        <path stroke="#000" d="M16 2.34l-1.5 2.6" />
+        <path stroke="#171717" d="M19.66 6l-2.6 1.5" />
+        <path stroke="#2e2e2e" d="M18 11h3" />
+        <path stroke="#454545" d="M17.06 14.5l2.6 1.5" />
+        <path stroke="#5c5c5c" d="M14.5 17.06l1.5 2.6" />
+        <path stroke="#737373" d="M11 18v3" />
+        <path stroke="#8d8d8d" d="M7.5 17.06L6 19.66" />
+        <path stroke="#a2a2a2" d="M4.94 14.5L2.34 16" />
+        <path stroke="#b9b9b9" d="M1 11h3" />
+        <path stroke="#d0d0d0" d="M2.34 6l2.6 1.5" />
+        <path stroke="#e7e7e7" d="M6 2.34l1.5 2.6" />
+      </g>
+    </svg>
+  </div>
+  <script src="./index.js"></script>
+</body>
+</html>

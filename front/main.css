@@ -1,0 +1,65 @@
+html {
+  width: 100%;
+  overflow-x: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC","Helvetica Neue",STHeiti,"Microsoft Yahei",Tahoma,Simsun,sans-serif;
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+  -webkit-font-smoothing: antialiased;
+  vertical-align: baseline;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+  text-size-adjust: 100%;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.page {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  padding: 18px;
+  overflow: auto;
+}
+._hide {
+  display: none;
+}
+.mt {
+  margin-top: 36px;
+}
+.btn {
+  display: block;
+  font-size: 36px;
+}
+h1, .h1 {
+  font-size: 40px;
+  font-weight: 700;
+  color: #000;
+}
+h2, .h2 {
+  font-size: 24px;
+  font-weight: 400;
+  color: #442
+}
+.select {
+  display: block;
+  width: 100%;
+  font-size: 36px;
+}
+.input {
+  font-size: 36px;
+  width: 100%;
+}
+#money {
+  color: #ff6161;
+  font-weight: 700;
+}
+img {
+  width: 100%;
+  height: auto;
+}

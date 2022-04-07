@@ -1,0 +1,27 @@
+{
+  "name": "watermoney",
+  "version": "1.0.0",
+  "description": "",
+  "main": "back/index.js",
+  "scripts": {
+    "serve": "node back/index.js",
+    "build": "npx poi front/index.html --public-url /water",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "amfe-flexible": "^2.2.1",
+    "axios": "^0.24.0",
+    "body-parser": "^1.19.0",
+    "dayjs": "^1.10.7",
+    "decimal.js": "^10.3.1",
+    "echarts": "^5.2.2",
+    "express": "^4.17.1",
+    "mongodb": "^4.1.4"
+  },
+  "devDependencies": {
+    "poi": "^12.10.3"
+  }
+}
