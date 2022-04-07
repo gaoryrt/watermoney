@@ -43,7 +43,7 @@ app.post('/saveTemp', async (req, res) => {
   const lastTs = new Date(Math.max(last.ts, 1640880000) * 1000)
   const data = await collection.updateOne({ door }, { $set: { temp: {val, ts} }})
   const wprice = new Decimal(val).minus(lastVal).mul(3.1)
-  const gprice = (now.getYear() - lastTs.getYear()) * 12 + now.getMonth() - lastTs.getMonth() * 8
+  const gprice = ((now.getYear() - lastTs.getYear()) * 12 + now.getMonth() - lastTs.getMonth()) * 8
   get(`http://localhost:8080/dak4o5tFLtqPVwsUGtpXiK/%23${door}/%E5%BA%94%E4%BB%98%E6%AC%BE%C2%A5${wprice.plus(gprice)}%EF%BC%8C%E8%AF%B7%E7%A1%AE%E8%AE%A4%E6%94%B6%E6%AC%BE?url=https://42.gaoryrt.com/water/confirmTemp?door=${door}&icon=https://cdn.jsdelivr.net/gh/gaoryrt/f/202111161522629.png`)
   res.send(data)
 })
