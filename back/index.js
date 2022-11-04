@@ -60,7 +60,13 @@ app.get('/confirmTemp', async (req, res) => {
 app.get('/whatsup', async(req, res) => {
   const db = await connectToDatabase(uri)
   const collection = await db.collection('wmcollection')
-  res.send(await collection.find({}).toArray())
+  res.send(await collection.find({}).toArray().map(door => ({
+    '户号': door.door,
+    '历史': door.history.map(sub => ({
+      '读数': sub.val,
+      '时间': new Date(sub.ts * 1000).toLocaleString('zh-CN')
+    }))
+  })))
 })
 
 app.listen(4040, () => {
