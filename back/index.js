@@ -75,6 +75,12 @@ app.get('/whatsup', async(req, res) => {
   })))
 })
 
+app.get('/allraw', async(req, res) => {
+  const db = await connectToDatabase(uri)
+  const collection = await db.collection('wmcollection')
+  res.send(await collection.find({}).toArray())
+})
+
 app.listen(4040, () => {
   console.log('started')
 })
