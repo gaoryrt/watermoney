@@ -35,8 +35,8 @@ $('.p2 .btn').addEventListener('click', () => {
   if (val < lastVal) return alert('新的数据需大于上次数据')
   hide('.p2')
   show('.sp')
-  const now = new Date()
-  const ts = Math.floor(now / 1000)
+  const now = new Date(1693584000 * 1000)
+  const ts = Math.floor(new Date() / 1000)
   post('/water/saveTemp', {
     door,
     val,
@@ -46,9 +46,10 @@ $('.p2 .btn').addEventListener('click', () => {
     $('#alpha').innerText = alpha
     const wprice = alpha.mul(3.1)
     $('#wprice').innerText = wprice
-    const duration = (now.getYear() - lastTs.getYear()) * 12 + now.getMonth() - lastTs.getMonth()
-    $('#duration').innerText = duration
-    const gprice = duration * 8
+    let monthDuration = (now.getYear() - lastTs.getYear()) * 12 + now.getMonth() - lastTs.getMonth()
+    monthDuration = monthDuration < 0 ? 0 : monthDuration
+    $('#duration').innerText = monthDuration
+    const gprice = monthDuration * 8
     $('#gprice').innerText = gprice
     $('#total').innerText = wprice.plus(gprice)
     hide('.sp')

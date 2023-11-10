@@ -34,7 +34,7 @@ app.get('/getLastData', async (req, res) => {
 
 app.post('/saveTemp', async (req, res) => {
   const {door, val, ts} = req.body
-  const now = new Date(ts * 1000)
+  const now = new Date(1693584000 * 1000)
   const db = await connectToDatabase(uri)
   const collection = await db.collection('wmcollection')
   const [{ history }] = await collection.find({ door }).toArray()
@@ -43,7 +43,9 @@ app.post('/saveTemp', async (req, res) => {
   const lastTs = new Date(Math.max(last.ts, 1640880000) * 1000)
   const data = await collection.updateOne({ door }, { $set: { temp: {val, ts} }})
   const wprice = new Decimal(val).minus(lastVal).mul(3.1)
-  const gprice = ((now.getYear() - lastTs.getYear()) * 12 + now.getMonth() - lastTs.getMonth()) * 8
+  let monthDuration = (now.getYear() - lastTs.getYear()) * 12 + now.getMonth() - lastTs.getMonth()
+  monthDuration = monthDuration < 0 ? 0 : monthDuration
+  const gprice = monthDuration * 8
   get(`http://localhost:8080/GgWta7hnXm5VrkVEkcZGRf/%23${door}/%E5%BA%94%E4%BB%98%E6%AC%BE%C2%A5${wprice.plus(gprice)}%EF%BC%8C%E8%AF%B7%E7%A1%AE%E8%AE%A4%E6%94%B6%E6%AC%BE?url=https://42.gaoryrt.com/water/confirmTemp?door=${door}&icon=https://cdn.jsdelivr.net/gh/gaoryrt/f/202111161522629.png`)
   res.send(data)
 })
