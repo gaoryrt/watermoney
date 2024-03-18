@@ -8,6 +8,8 @@ const { env } = require("process");
 const app = express();
 
 const uri = env.WATER_DB_URL;
+
+console.log(uri);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
