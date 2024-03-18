@@ -4,8 +4,10 @@ const path = require("path");
 const Decimal = require("decimal.js");
 const bodyParser = require("body-parser");
 const { MongoClient } = require("mongodb");
+const { env } = require("process");
 const app = express();
-const uri = "";
+
+const uri = env.WATER_DB_URL;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
