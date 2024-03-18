@@ -11,13 +11,15 @@ app.use(bodyParser.json());
 
 let cachedDb = null;
 
+let connection = null;
+
 async function connectToDatabase(uri) {
   if (cachedDb) return cachedDb;
-  const client = await MongoClient.connect(uri, {
+  connection = await MongoClient.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
-  const db = await client.db("watermoneydb");
+  const db = await connection.db("watermoneydb");
   cachedDb = db;
   return db;
 }
@@ -30,6 +32,7 @@ app.get("/getLastData", async (req, res) => {
   const collection = await db.collection("wmcollection");
   const data = await collection.find({ door }).toArray();
   res.send(data);
+  connection.close();
 });
 
 app.post("/saveTemp", async (req, res) => {
@@ -58,6 +61,7 @@ app.post("/saveTemp", async (req, res) => {
     )}%EF%BC%8C%E8%AF%B7%E7%A1%AE%E8%AE%A4%E6%94%B6%E6%AC%BE?url=https://42.gaoryrt.com/water/confirmTemp?door=${door}&icon=https://cdn.jsdelivr.net/gh/gaoryrt/f/202111161522629.png`
   );
   res.send(data);
+  connection.close();
 });
 
 app.get("/confirmTemp", async (req, res) => {
@@ -75,6 +79,7 @@ app.get("/confirmTemp", async (req, res) => {
     );
     res.send(data);
   }
+  connection.close();
 });
 
 app.get("/whatsup", async (req, res) => {
@@ -92,12 +97,14 @@ app.get("/whatsup", async (req, res) => {
         })),
     }))
   );
+  connection.close();
 });
 
 app.get("/allraw", async (req, res) => {
   const db = await connectToDatabase(uri);
   const collection = await db.collection("wmcollection");
   res.send(await collection.find({}).toArray());
+  connection.close();
 });
 
 app.listen(4040, () => {
