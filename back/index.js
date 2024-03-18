@@ -24,7 +24,7 @@ async function connectToDatabase(uri) {
   return db;
 }
 
-app.use("/", express.static(path.join(__dirname, "dist")));
+app.use("/", express.static(path.join(__dirname, "../dist")));
 
 app.get("/getLastData", async (req, res) => {
   const door = +req.query.door;
