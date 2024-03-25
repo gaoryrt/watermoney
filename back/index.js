@@ -24,14 +24,15 @@ async function wmdb(uri) {
   return db;
 }
 
+let cachedCdb = null;
 async function cdb(uri) {
-  if (cachedDb) return cachedDb;
+  if (cachedCdb) return cachedCdb;
   const connection = await MongoClient.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
   const db = await connection.db("countdb");
-  cachedDb = db;
+  cachedCdb = db;
   return db;
 }
 
