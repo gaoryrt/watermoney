@@ -38,8 +38,8 @@ async function cdb(uri) {
 app.get("/hit", async (req, res) => {
   const { key, hit = false } = req.query;
   if (!key) req.send({ count: 0 });
-  const cdb = await cdb(uri);
-  const collection = await cdb.collection("hit");
+  const db = await cdb(uri);
+  const collection = await db.collection("hit");
 
   const oldVal = await collection
     .find({ key })
