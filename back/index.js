@@ -4,7 +4,6 @@ const path = require("path");
 const Decimal = require("decimal.js");
 const bodyParser = require("body-parser");
 const { MongoClient } = require("mongodb");
-const { env } = require("process");
 const app = express();
 
 const uri = "";
@@ -14,7 +13,7 @@ app.use(bodyParser.json());
 
 let cachedDb = null;
 
-async function connectToDatabase(uri) {
+async function wmdb(uri) {
   if (cachedDb) return cachedDb;
   const connection = await MongoClient.connect(uri, {
     useNewUrlParser: true,
@@ -25,11 +24,51 @@ async function connectToDatabase(uri) {
   return db;
 }
 
+async function cdb(uri) {
+  if (cachedDb) return cachedDb;
+  const connection = await MongoClient.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  const db = await connection.db("countdb");
+  cachedDb = db;
+  return db;
+}
+
+app.get("/hit", async (req, res) => {
+  const { key, hit = false } = req.query;
+  if (!key) req.send({ count: 0 });
+  const cdb = await cdb(uri);
+  const collection = await cdb.collection("hit");
+
+  const oldVal = await collection
+    .find({ key })
+    .toArray()
+    .then((arr) => arr[0]);
+  if (oldVal) {
+    if (hit) {
+      const newNum = oldVal.val + 1;
+      await collection.updateOne({ key }, { $set: { val: newNum } });
+      res.send({ count: newNum });
+    } else {
+      res.send({ count: oldVal.val });
+    }
+  } else {
+    if (hit) {
+      await collection.insertOne({ key, val: 1 });
+      res.send({ count: 1 });
+    } else {
+      await collection.insertOne({ key, val: 0 });
+      res.send({ count: 0 });
+    }
+  }
+});
+
 app.use("/", express.static(path.join(__dirname, "../dist")));
 
 app.get("/getLastData", async (req, res) => {
   const door = +req.query.door;
-  const db = await connectToDatabase(uri);
+  const db = await wmdb(uri);
   const collection = await db.collection("wmcollection");
   const data = await collection.find({ door }).toArray();
   res.send(data);
@@ -38,7 +77,7 @@ app.get("/getLastData", async (req, res) => {
 app.post("/saveTemp", async (req, res) => {
   const { door, val, ts } = req.body;
   const now = new Date(1693584000 * 1000);
-  const db = await connectToDatabase(uri);
+  const db = await wmdb(uri);
   const collection = await db.collection("wmcollection");
   const [{ history }] = await collection.find({ door }).toArray();
   const last = history.sort((a, b) => b.ts - a.ts)[0];
@@ -65,7 +104,7 @@ app.post("/saveTemp", async (req, res) => {
 
 app.get("/confirmTemp", async (req, res) => {
   const door = +req.query.door;
-  const db = await connectToDatabase(uri);
+  const db = await wmdb(uri);
   const collection = await db.collection("wmcollection");
   const [{ temp, history }] = await collection.find({ door }).toArray();
   const lastTs = history.sort((a, b) => b.ts - a.ts)[0].ts;
@@ -81,7 +120,7 @@ app.get("/confirmTemp", async (req, res) => {
 });
 
 app.get("/whatsup", async (req, res) => {
-  const db = await connectToDatabase(uri);
+  const db = await wmdb(uri);
   const collection = await db.collection("wmcollection");
   const arr = [...(await collection.find({}).toArray())];
   res.send(
@@ -98,7 +137,7 @@ app.get("/whatsup", async (req, res) => {
 });
 
 app.get("/allraw", async (req, res) => {
-  const db = await connectToDatabase(uri);
+  const db = await wmdb(uri);
   const collection = await db.collection("wmcollection");
   res.send(await collection.find({}).toArray());
 });
